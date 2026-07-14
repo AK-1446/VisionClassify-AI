@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>VisionClassify AI</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+    <div class="header">
+
+        <h1>
+            🧠 VisionClassify AI
+        </h1>
+
+        <p class="subtitle">
+
+            AI Powered Image Classification using TensorFlow & MobileNetV2
+
+        </p>
+
+        <div class="badges">
+            <span>⚡ TensorFlow</span>
+            <span>🤖 Deep Learning</span>
+            <span>🧠 MobileNetV2</span>
+            <span>🚀 Flask</span>
+        </div>
+
+    </div>
+
+    <form action="/predict"
+          method="POST"
+          enctype="multipart/form-data">
+
+        <div class="upload-area" id="dropArea">
+
+            <h2>
+                📷 Upload Image
+            </h2>
+
+            <p>
+                Drag & Drop or select an image
+            </p>
+
+            <label for="imageInput" class="choose-btn">
+
+                Choose Image
+
+            </label>
+
+            <input
+                type="file"
+                id="imageInput"
+                name="image"
+                accept="image/*"
+                hidden
+                required>
+        </div>
+
+        <button type="submit">
+
+            🔍 Predict Image
+
+        </button>
+
+    </form>
+
+    <div id="preview-area">
+
+        <img id="previewImage"
+             src="#"
+             alt="Preview">
+
+    </div>
+{% if prediction %}
+
+<div class="result-card">
+
+    <h2>
+        Prediction Result
+    </h2>
+
+    <img class="result-image"
+         src="{{ url_for('static', filename='uploads/' + image) }}">
+
+    <div class="prediction-box">
+        <h1>
+            {{ prediction }}
+        </h1>
+    </div>
+
+    <div class="confidence-box">
+        <h3>
+            Confidence
+        </h3>
+        <div class="progress">
+            <div class="progress-bar"
+                 style="width: {{ confidence }}%;">
+            </div>
+        </div>
+        <p>
+            {{ confidence }}%
+        </p>
+    </div>
+</div>
+
+<div class="top3-card">
+
+<h2>
+    🏆 Top 3 Predictions
+</h2>
+
+{% for item in top3 %}
+
+<div class="prediction-item">
+
+<div class="prediction-header">
+
+<span>
+{{ item.label }}
+</span>
+
+<span>
+{{ item.confidence }}%
+</span>
+
+</div>
+
+<div class="progress">
+
+<div class="progress-bar"
+     style="width: {{ item.confidence }}%;">
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+{% if history %}
+
+<div class="history-card">
+
+<h2>
+    🕒 Recent Predictions
+</h2>
+
+{% for item in history %}
+
+<div class="history-item">
+
+<img src="{{ url_for('static', filename='uploads/' + item.image) }}">
+
+<div>
+
+<h3>
+{{ item.prediction }}
+</h3>
+
+<p>
+{{ item.confidence }}%
+</p>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% endif %}
+
+<div class="stats-card">
+
+<h2>
+    📊 Model Information
+</h2>
+
+<p>
+<strong>Model:</strong> MobileNetV2
+</p>
+
+<p>
+<strong>Dataset:</strong> ImageNet
+</p>
+
+<p>
+<strong>Framework:</strong> TensorFlow
+</p>
+
+<p>
+<strong>Backend:</strong> Flask
+</p>
+
+<p>
+<strong>Input Size:</strong> 224×224
+</p>
+
+</div>
+
+<div id="loading">
+
+<p>
+🔍 AI is analyzing your image...
+</p>
+
+</div>
+
+<div class="footer">
+
+<p>
+Made with ❤️ using Flask + TensorFlow
+</p>
+
+</div>
+
+</div>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+
+</html>
